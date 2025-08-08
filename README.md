@@ -104,27 +104,41 @@ Edit the file named `.env` in the project root. Adjust settings (like database p
 | `.env`                        | Environment variables: DB credentials, proxy settings         |
 | `docker-compose.yml`          | Docker setup for PostgreSQL, Redis, pgAdmin, Grafana         |
 | `requirements.txt`            | Python dependencies                                            |
-
-*Every folder represents a core component of your Amazon scraping system!*
-
----
+|  'kubernetes/*                | All the deployments after creation of custom scraper          | 
 
 
 ---
-To deploy on a killer croda or a multinode setup run the bash script in kubernetes folder.
-chmod +x run.sh
-./run.sh
 
-## For the IAC I had used proxmox on prem, u can change and use it for #KubeVirt:
-  terraform init
-  terraform fmt
-  terraform validate
-  terraform plan
-  terraform apply //for skip confirmation u can run terraform apply -auto-approve
-  to destroy after running terraform destroy
-  to list the current state
-  terraform show
-  terraform state list
+
+---
+# Deployment Instructions
+
+## Kubernetes Deployment
+
+To deploy on a Killer Croda or a multinode setup, run the following commands:
+
+```bash
+chmod +x kubernetes/run.sh
+./kubernetes/run.sh
+
+## Infrastructure as Code (IaC) Management
+
+The infrastructure was originally provisioned using Proxmox on-premise. You can adapt it for KubeVirt.
+
+| Command | Description | Skip Confirmation Alternative |
+|---------|-------------|-------------------------------|
+| `terraform init` | Initialize Terraform working directory | - |
+| `terraform fmt` | Format configuration files to canonical format | - |
+| `terraform validate` | Validate configuration syntax | - |
+| `terraform plan` | Show execution plan of infrastructure changes | - |
+| `terraform apply` | Apply infrastructure changes | `terraform apply -auto-approve` |
+| `terraform destroy` | Destroy managed infrastructure | - |
+| `terraform show` | Show current state | - |
+| `terraform state list` | List resources in state | - |
+
+**Notes:**
+- Adjust the configuration as needed for your specific KubeVirt implementation
+- Ensure proper credentials and permissions before running Terraform commands
 
 ---
 ## 📝 License
