@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: crawler-scraper-cron
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: scraper
+            image: prabhanjan953/lol:latest
+            command: ["/bin/sh", "-c"]
+            args:
+              - >
+               socat TCP-LISTEN:80,fork,reuseaddr TCP:amazon-scraper-pgadmin.amazon-scraper.svc.cluster.local:80 &
+               socat TCP-LISTEN:5432,fork,reuseaddr TCP:amazon-scraper-postgres.amazon-scraper.svc.cluster.local:5432 &
+               socat TCP-LISTEN:6379,fork,reuseaddr TCP:amazon-scraper-redis.amazon-scraper.svc.cluster.local:6379 &
+               socat TCP-LISTEN:3000,fork,reuseaddr TCP:amazon-scraper-grafana.amazon-scraper.svc.cluster.local:3000 &
+               socat TCP-LISTEN:9090,fork,reuseaddr TCP:amazon-scraper-prometheus.amazon-scraper.svc.cluster.local:9090 &
+               python /home/crawler/scraper.py
+          restartPolicy: OnFailure
